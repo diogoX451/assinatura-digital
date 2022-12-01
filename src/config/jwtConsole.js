@@ -23,16 +23,7 @@ const jwt = {
     return args;
   },
 };
-function getConsent() {
-  const urlScopes = SCOPES.join("+");
-  // Construct consent URL
-  const redirectUri = "https://developers.docusign.com/platform/auth/consent";
-  const consentUrl =
-    `${jwtConfig.dsOauthServer}/oauth/auth?response_type=code&` +
-    `scope=${urlScopes}&client_id=${jwtConfig.dsJWTClientId}&` +
-    `redirect_uri=${redirectUri}`;
-}
-function getArgs(apiAccountId, accessToken, basePath) {
+const getArgs = async (apiAccountId, accessToken, basePath) => {
   const envelopeArgs = {
     ccEmail: "diogosgn@gmail.com",
     ccName: "Diogo",
@@ -46,8 +37,8 @@ function getArgs(apiAccountId, accessToken, basePath) {
   };
 
   return args;
-}
-async function authenticate() {
+};
+const authenticate = async () => {
   const jwtLifeSec = 10 * 60;
   const dsApi = new docusign.ApiClient();
   dsApi.setOAuthBasePath(jwtConfig.dsOauthServer.replace("https://", ""));
@@ -87,6 +78,16 @@ async function authenticate() {
       }
     }
   }
+};
+
+function getConsent() {
+  const urlScopes = SCOPES.join("+");
+  // Construct consent URL
+  const redirectUri = "https://developers.docusign.com/platform/auth/consent";
+  const consentUrl =
+    `${jwtConfig.dsOauthServer}/oauth/auth?response_type=code&` +
+    `scope=${urlScopes}&client_id=${jwtConfig.dsJWTClientId}&` +
+    `redirect_uri=${redirectUri}`;
 }
 
 module.exports = jwt;

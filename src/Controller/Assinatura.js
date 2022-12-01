@@ -1,5 +1,6 @@
 const docusign = require("docusign-esign");
-const fs = require("fs-extra");
+const fs = require("fs");
+const path = require("path");
 const jwtConsole = require("../config/jwtConsole");
 const user = [];
 module.exports = {
@@ -14,12 +15,15 @@ module.exports = {
 };
 async function sendEnvelope(args) {
   let dsApiClient = new docusign.ApiClient();
-  dsApiClient.setBasePath(args.basePath);
-  dsApiClient.addDefaultHeader("Authorization", "Bearer " + args.accessToken);
+  const code1 = "https://demo.docusign.net/restapi";
+  dsApiClient.setBasePath(code1);
+  const code2 =
+    "eyJ0eXAiOiJNVCIsImFsZyI6IlJTMjU2Iiwia2lkIjoiNjgxODVmZjEtNGU1MS00Y2U5LWFmMWMtNjg5ODEyMjAzMzE3In0.AQoAAAABAAUABwCAMBhiqtPaSAgAgJjcw7LT2kgCAIyPUSNk0U1PpxhZSD-mpNIVAAEAAAAYAAIAAAAFAAAAHQAAAA0AJAAAADZhNmY4ZmRkLWI2ZDYtNDdiNi1iMWZhLTIzOTc1YWRkZDVjOSIAJAAAADZhNmY4ZmRkLWI2ZDYtNDdiNi1iMWZhLTIzOTc1YWRkZDVjORIAAQAAAAYAAABqd3RfYnIjACQAAAA2YTZmOGZkZC1iNmQ2LTQ3YjYtYjFmYS0yMzk3NWFkZGQ1Yzk.ZStFjV2O8nHAomCxwHO1fIOFNmknGstQHwRfadHnIg2-1QOs_-0Fy2UDdmK7Pwm2PlDPesR-yZvjGgmpsTK3d6lpqp4lPDqBf05aUbZFguZsUkK0KW7aqtGkHQA3nN95R5kV-PNifshrNCk_RF2F71U0xhMqcunXwck7fIR7xizsnHJlqpjgkEihnlRE1MGMQBD1cjsGi9iHjT6mbAh9WTAkuLkOSf6zlDfSBWCAJt9OowQOa-BMzZbj3TIIZz59CBldD_rh9j8iCCE-CgxRPGduXWC83XQQzTD39uKxyl2NMadsj_utZu3asEH44XxxpMz4iXasLD2UvyOU6JSGZQ";
   let envelopesApi = new docusign.EnvelopesApi(dsApiClient);
   let results = null;
 
   // Step 1. Make the envelope request body
+
   const envelope = makeEnvelope(args.envelopeArgs);
 
   // Step 2. call Envelopes::create API method
@@ -33,17 +37,19 @@ async function sendEnvelope(args) {
   console.log(`Envelope was created. EnvelopeId ${envelopeId}`);
   return { envelopeId: envelopeId };
 }
-
-async function makeEnvelope(args, documents) {
+let docPdf = path.resolve(__dirname, "../../demo_documents");
+let docSingle = "World_Wide_Corp_lorem.pdf";
+let doc = fs.readFileSync(path.resolve(docPdf, docSingle));
+function makeEnvelope(args, documents) {
   const env = new docusign.EnvelopeDefinition();
   env.emailSubject = "Please sign this document set";
-
-  const doc1 = new docusign.Document();
-  const doc1b64 = documents;
-  doc1.documentBase64 = doc1b64;
-  doc1.name = "Order acknowledgement"; // can be different from actual file name
-  doc1.fileExtension = "html"; // Source data format. Signed docs are always pdf.
-  doc1.documentId = "1"; // a label used to reference the doc
+  const doc1b64 = Buffer.from(doc).toString("base64");
+  let doc1 = new docusign.Document.constructFromObject({
+    documentBase64: doc1b64,
+    name: "Lorem Ipsum",
+    fileExtension: "pdf",
+    documentId: "1",
+  });
 
   // The order in the docs array determines the order in the envelope
   env.documents = [doc1];
@@ -83,11 +89,12 @@ async function makeEnvelope(args, documents) {
     signers: [...recivers],
     carbonCopies: [cc1],
   });
+
   env.recipients = recipients;
 
   // Request that the envelope be sent by setting |status| to "sent".
   // To request that the envelope be created as a draft, set to "created"
-  // env.status = args.status;
+  env.status = "sent";
 
   return env;
 }
