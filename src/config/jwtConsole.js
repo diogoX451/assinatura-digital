@@ -2,7 +2,7 @@
 const docusign = require("docusign-esign");
 const fs = require("fs");
 const path = require("path");
-
+const sendEnvelope = require("../Controller/Assinatura");
 const jwtConfig = require("./jwtConfig.json");
 
 const { ProvisioningInformation } = require("docusign-esign");
@@ -11,18 +11,6 @@ const { ProvisioningInformation } = require("docusign-esign");
 // const doc3File = "World_Wide_Corp_lorem.pdf";
 
 const SCOPES = ["signature", "impersonation"];
-const jwt = {
-  main: async () => {
-    const accountInfo = await authenticate();
-    const args = getArgs(
-      accountInfo.apiAccountId,
-      accountInfo.accessToken,
-      accountInfo.basePath
-    );
-    console.log(args);
-    return args;
-  },
-};
 const getArgs = async (apiAccountId, accessToken, basePath) => {
   const envelopeArgs = {
     ccEmail: "diogosgn@gmail.com",
@@ -35,7 +23,7 @@ const getArgs = async (apiAccountId, accessToken, basePath) => {
     accountId: apiAccountId,
     envelopeArgs,
   };
-
+  console.log(args);
   return args;
 };
 const authenticate = async () => {
@@ -89,5 +77,17 @@ function getConsent() {
     `scope=${urlScopes}&client_id=${jwtConfig.dsJWTClientId}&` +
     `redirect_uri=${redirectUri}`;
 }
-
+const jwt = {
+  main: async () => {
+    const accountInfo = await authenticate();
+    const args = getArgs(
+      accountInfo.apiAccountId,
+      accountInfo.accessToken,
+      accountInfo.basePath
+    );
+    let envelope = sendEnvelope.sendEnvelope(args);
+    console.log(envelope);
+  },
+};
+jwt.main();
 module.exports = jwt;

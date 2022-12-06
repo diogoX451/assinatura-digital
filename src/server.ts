@@ -1,6 +1,5 @@
 import bodyParser from "body-parser";
 import express from "express";
-
 import router from "./Router/router";
 const app = express();
 const port = 3333;
