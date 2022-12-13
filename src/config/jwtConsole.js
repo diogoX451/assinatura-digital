@@ -85,9 +85,11 @@ const jwt = {
       accountInfo.accessToken,
       accountInfo.basePath
     );
-    let envelope = sendEnvelope.sendEnvelope(args);
+    let envelope = await sendEnvelope.sendEnvelope(args);
     console.log(envelope);
   },
 };
+
 jwt.main();
+
 module.exports = jwt;
