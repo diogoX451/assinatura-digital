@@ -8,12 +8,14 @@ export class Recipients {
   addCarbonCopy() {
     let carbonCopy = new CarbonCopy();
     carbonCopy.recipientId = this.signers.length + this.carbonCopies.length + 1;
+    carbonCopy.routingOrder = this.carbonCopies.length + 1;
     this.carbonCopies.push(carbonCopy);
     return carbonCopy;
   }
   addSigner() {
     let signer = new Signer();
-    signer.recipientId = this.signers.length + this.carbonCopies.length + 1;
+    signer.routingOrder = this.signers.length + 1;
+    signer.recipientId = this.signers.length + 1;
     this.signers.push(signer);
     return signer;
   }
