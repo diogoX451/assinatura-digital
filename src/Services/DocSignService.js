@@ -10,7 +10,7 @@ const SCOPES = ["signature", "impersonation"];
 const JWT_LIVE_SEC = 10 * 60;
 export class DocSignService {
   accessToken = null;
-  documents = [];
+  sendDocument = [];
   recipients = new Recipients();
 
   async authenticate() {
@@ -32,8 +32,10 @@ export class DocSignService {
   }
   addDocument() {
     let document = new Document();
-    document.documentId = this.documents.length + 1;
-    this.documents.push(document);
+    let env = new docusign.EnvelopeDefinition();
+    document.documentId = this.sendDocument.length + 1;
+    this.sendDocument.push(document);
+    env.documents = this.sendDocument;
     return document;
   }
   async send() {

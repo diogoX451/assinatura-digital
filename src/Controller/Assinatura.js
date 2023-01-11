@@ -13,12 +13,12 @@ let postAssinatura = async (req, res) => {
   document.name = "World_Wide_Corp_Battle_Plan_Trafalgar";
   document.fileExtension = "docx";
 
-  document = docusign.addDocument();
-  document.documentBase64 = Buffer.from(
-    fs.readFileSync(path.resolve(demoDocsPath, doc3File))
-  ).toString("base64");
-  document.name = "World_Wide_Corp_lorem";
-  document.fileExtension = "pdf";
+  // document = docusign.addDocument();
+  // document.documentBase64 = Buffer.from(
+  //   fs.readFileSync(path.resolve(demoDocsPath, doc3File))
+  // ).toString("base64");
+  // document.name = "World_Wide_Corp_lorem";
+  // document.fileExtension = "pdf";
 
   let signer = docusign.recipients.addSigner();
   signer.name = "diogosgn";
