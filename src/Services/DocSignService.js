@@ -31,15 +31,6 @@ export class DocSignService {
     }
   }
   addDocument(name, fileExtension, documentBase64) {
-    // let document = new Document();
-    // console.log(document);
-    // let doc = new docusign.Document.constructFromObject({
-    //   documentBase64: document.documentBase64,
-    //   name: document.name,
-    //   fileExtension: document.fileExtension,
-    //   documentId: document.documentId,
-    // });
-    // env.documents = [doc];
     let document = new Document();
     document.documentBase64 = documentBase64;
     document.name = name;

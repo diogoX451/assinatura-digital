@@ -1,6 +1,6 @@
 export class CarbonCopy {
   email = null;
   name = null;
-  recipientId = null;
+  recipientId = 1;
   routingOrder = null;
 }

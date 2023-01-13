@@ -15,7 +15,7 @@ export class Recipients {
   addSigner() {
     let signer = new Signer();
     signer.routingOrder = this.signers.length + 1;
-    signer.recipientId = this.signers.length + 1;
+    signer.recipientId = this.signers.length + this.carbonCopies.length + 1;
     this.signers.push(signer);
     return signer;
   }
