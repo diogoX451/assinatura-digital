@@ -9,7 +9,7 @@ const RSAKEY = fs.readFileSync(path.resolve(__dirname, "./private.key"));
 const SCOPES = ["signature", "impersonation"];
 let env = new docusign.EnvelopeDefinition();
 const JWT_LIVE_SEC = 10 * 60;
-export class DocSignService {
+export default class DocSignService {
   accessToken = null;
   recipients = new Recipients();
   sendDocument = [];
@@ -30,7 +30,7 @@ export class DocSignService {
       throw e;
     }
   }
-  addDocument(name, fileExtension, documentBase64) {
+  addDocument(name: string, fileExtension: string, documentBase64: string) {
     let document = new Document();
     document.documentBase64 = documentBase64;
     document.name = name;
