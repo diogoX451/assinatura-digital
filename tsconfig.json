@@ -8,5 +8,5 @@
     "esModuleInterop": true,
     "strict": true
   },
-  "include": ["src/**/*", "src/router/routes.ts", "server.ts"]
+  "include": ["src/**/*", "src/router/routes.ts", "src/server.ts"]
 }
