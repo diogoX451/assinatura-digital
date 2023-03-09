@@ -1,6 +1,6 @@
 import bodyParser from "body-parser";
 import express from "express";
-import router from "./Router/router";
+import router from "./src/Router/router";
 const app = express();
 const port = 8182;
 app.use(express.json());
