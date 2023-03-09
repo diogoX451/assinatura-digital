@@ -10,7 +10,6 @@ require("dotenv").config();
 
 export default class SignerController {
   constructor(private readonly Key: Key) {
-    this.Key = Key;
   }
 
   async postAssinatura(req: Request, res: Response) {
